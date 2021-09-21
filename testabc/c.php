@@ -1,19 +1,22 @@
 <?php
 require_once("connect.php");
 
-$result = $conn->query("select * from test;");
+$result = $conn->query("SELECT * FROM test ORDER BY id ASC;");
 if(!$result){
     die($conn->error);
 }
-//print_r($result);
+// print_r($result);
 while($row = $result->fetch_assoc()){
-    echo "id: ".$row["id"]."<br>"."username: ". $row["username"]."<br>";
+    echo "id: ".$row["id"] ."&nbsp;&nbsp;";
+    echo "<a href= 'delete.php?id=".$row["id"]."'>delete</a>";
+    echo "<br>";
+    echo "username: ". $row["username"]."<br>";
 }
 ?>
+<h2>新增 user</h2>
+<form method="GET" action="add.php">
+username: <input name = "username"/>
 
-<form method="GET" action="b.php">
-name: <input name = "name"/>
-age: <input name = "age"/>
 <input type = "submit"/>
 
 </form>
