@@ -16,7 +16,11 @@ while($row = $result->fetch_assoc()){
 <h2>新增 user</h2>
 <form method="GET" action="add.php">
 username: <input name = "username"/>
-
 <input type = "submit"/>
-
+</form>
+<h2>編輯 user</h2>
+<form method="GET" action="updata.php">
+id: <input name = "id"/>
+username: <input name = "username"/>
+<input type = "submit"/>
 </form>
