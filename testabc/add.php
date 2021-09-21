@@ -1,8 +1,7 @@
 <?php
 require_once("connect.php");
 if(empty($_GET["username"])){
-    echo "<h2><a href='c.php'>go back</a></h2>" . "<br>";
-    die("請輸入username");
+    die("請輸入id"."<br>"."<h2><a href='c.php'>go back</a></h2>" . "<br>");
     
 }
 
