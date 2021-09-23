@@ -1,0 +1,31 @@
+* {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.title {
+    font-size: 36px;
+    margin: 10px 0;
+}
+
+.wrap {
+    max-width: 1024px;
+    text-align: center;
+    margin: auto;
+}
+
+.jobs {
+    width: 600px;
+    margin: auto;
+}
+
+.job {
+    border: 1px solid #ccc;
+    padding: 10px;
+    text-align: left;
+}
+
+.job~.job {
+    margin-top: 20px;
+}
