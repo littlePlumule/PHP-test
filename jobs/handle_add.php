@@ -17,7 +17,7 @@ $result = $conn->query($sql);
 if($result){
     header('Location: ./admin.php');
 }else{
-    echo "falled： " . $conn->error;
+    echo "failed： " . $conn->error;
 }
 
 ?>

@@ -23,8 +23,8 @@
                         echo    "<h2 class='job__title'> " . $row['title'] . " </h2>";
                         echo    "<p class='job__desc'> " . $row['description'] . " </p>";
                         echo    "<p class='job__salary'> " . $row['salary'] . " </p>";
-                        echo    "<a class='job__link' href='./updata.php?".$row['id']."'>編輯職缺 </a>";
-                        echo    "<a class='job__link' href='./delete.php?".$row['id']."'>刪除職缺 </a>";
+                        echo    "<a class='job__link' href='./update.php?id=".$row['id']."'>編輯職缺 </a>";
+                        echo    "<a class='job__link' href='./delete.php?id=".$row['id']."'>刪除職缺 </a>";
                         echo"</div>";
                         
                     }
