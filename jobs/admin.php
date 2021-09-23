@@ -1,3 +1,5 @@
+<?php require_once("./connect.php"); ?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -12,21 +14,22 @@
         <h1 class="title">job board 管理後台</h1>
         <a href="./add.php">新增職缺</a>
         <div class="jobs">
-
-            <div class="job">
-                <h2 class="job__title">前端工程師</h2>
-                <p class="job__desc">前端工程師前端工程師前端工程師前端工程師前端工程師前端工程師前端工程師前端工程師前端工程師前端工程師前端工程師前端工程師前端工程師前端工程師前端工程師</p>
-                <p class="job__salary">薪資範圍:面議</p>
-                <a class="job__link" href="#">編輯職缺</a>
-                <a class="job__link" href="#">刪除職缺</a>
-            </div>
-            <div class="job">
-                <h2 class="job__title">前端工程師</h2>
-                <p class="job__desc">前端工程師前端工程師前端工程師前端工程師前端工程師前端工程師前端工程師前端工程師前端工程師前端工程師前端工程師前端工程師前端工程師前端工程師前端工程師</p>
-                <p class="job__salary">薪資範圍:面議</p>
-                <a class="job__link" href="#">編輯職缺</a>
-                <a class="job__link" href="#">刪除職缺</a>
-            </div>
+            <?php
+                $sql = "SELECT * FROM jobs ORDER BY create_at DESC";
+                $result = $conn->query($sql);
+                if($result->num_rows > 0){
+                    while($row = $result->fetch_assoc()){
+                        echo"<div class='job'>";
+                        echo    "<h2 class='job__title'> " . $row['title'] . " </h2>";
+                        echo    "<p class='job__desc'> " . $row['description'] . " </p>";
+                        echo    "<p class='job__salary'> " . $row['salary'] . " </p>";
+                        echo    "<a class='job__link' href='./updata.php?".$row['id']."'>編輯職缺 </a>";
+                        echo    "<a class='job__link' href='./delete.php?".$row['id']."'>刪除職缺 </a>";
+                        echo"</div>";
+                        
+                    }
+                }
+            ?>
         </div>
     </div>
 </body>
