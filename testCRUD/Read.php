@@ -8,13 +8,13 @@ if(!$result){
 // print_r($result);
 while($row = $result->fetch_assoc()){
     echo "id: ".$row["id"] ."&nbsp;&nbsp;";
-    echo "<a href= 'delete.php?id=".$row["id"]."'>delete</a>";
+    echo "<a href= 'Delete.php?id=".$row["id"]."'>delete</a>";
     echo "<br>";
     echo "username: ". $row["username"]."<br>";
 }
 ?>
 <h2>新增 user</h2>
-<form method="GET" action="add.php">
+<form method="GET" action="Create.php">
 username: <input name = "username"/>
 <input type = "submit"/>
 </form>

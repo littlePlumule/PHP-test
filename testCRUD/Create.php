@@ -1,7 +1,7 @@
 <?php
 require_once("connect.php");
 if(empty($_GET["username"])){
-    die("請輸入id"."<br>"."<h2><a href='c.php'>go back</a></h2>" . "<br>");
+    die("請輸入id"."<br>"."<h2><a href='Read.php'>go back</a></h2>" . "<br>");
     
 }
 
@@ -14,7 +14,7 @@ if(!$result){
     die($conn->error);
 }
 echo "新增成功!";
-header("Location: c.php");
+header("Location: Read.php");
 ?>
-<!-- <a href="c.php">go back</a> -->
+<!-- <a href="Read.php">go back</a> -->
 

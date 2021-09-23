@@ -1,7 +1,7 @@
 <?php
 require_once("connect.php");
 if(empty($_GET["id"])){
-    die("請輸入id"."<br>"."<h2><a href='c.php'>go back</a></h2>" . "<br>");
+    die("請輸入id"."<br>"."<h2><a href='Read.php'>go back</a></h2>" . "<br>");
     
 }
 
@@ -22,9 +22,9 @@ if($conn -> affected_rows >= 1){
     echo "查無資料";
 }
 
-echo "<h2><a href='c.php'>go back</a></h2>" . "<br>";
+echo "<h2><a href='Read.php'>go back</a></h2>" . "<br>";
 
-// header("Location: c.php");
+// header("Location: Read.php");
 ?>
-<!-- <a href="c.php">go back</a> -->
+<!-- <a href="Read.php">go back</a> -->
 
