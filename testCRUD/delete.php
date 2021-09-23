@@ -16,6 +16,8 @@ $result = $conn->query($sql);
 if(!$result){
     die($conn->error);
 }
+
+/*
 if($conn -> affected_rows >= 1){
     echo "刪除成功!";
 }else{
@@ -23,8 +25,9 @@ if($conn -> affected_rows >= 1){
 }
 
 echo "<h2><a href='Read.php'>go back</a></h2>" . "<br>";
+*/
 
-// header("Location: Read.php");
+header("Location: Read.php");
 ?>
 <!-- <a href="Read.php">go back</a> -->
 
