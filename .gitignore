@@ -1,3 +1,5 @@
 /testCRUD/connect.php
 /jobs/connect.php
 /blog/connect.php
+/messageBoard/connect.php
+/try/connect.php
