@@ -4,9 +4,12 @@ $sql = "SELECT * FROM messageBoard ORDER BY created_at DESC";
 $result = $conn->query($sql);
 if(!$result){
     die('Error:'.$conn->error);
+
 }
-
-
+$username = NULL;
+if(!empty($_COOKIE['username'])){
+    $username = $_COOKIE['username'];
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -25,6 +28,15 @@ if(!$result){
     </header>
 
     <main class="board">
+        <div>
+            <?php if(!$username){ ?>
+        <a class="board__btn" href="register.php">註冊</a>
+        <a class="board__btn" href="login.php">登入</a>
+            <?php } else{ ?>
+                <a class="board__btn" href="logout.php">登出</a>
+            <?php } ?>    
+        </div>
+        
         <h1 class="title">
             Comments
         </h1>
@@ -38,14 +50,17 @@ if(!$result){
             echo "<h2 class = 'error'>錯誤：$msg</h2>";
         }
         ?>
+        
+            
         <form class="form" method="POST" action="handle_add.php">
-            <div class="board__nickname">
-                <span>暱稱：</span>
-                <input type="text" name="nickname"/>
-            </div>
             <textarea class="form__textarea" name="content" rows="3" placeholder="請輸入你的留言..."></textarea>
+            <?php if($username){ ?>
             <input class="board__submit" type="submit"/>
+            <?php } else{ ?>
+            <h3>請登入發布留言</h3>
+            <?php } ?>  
         </form>
+          
         <hr/>
         <section>
             <?php

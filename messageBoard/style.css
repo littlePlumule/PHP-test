@@ -30,6 +30,20 @@ body {
     padding: 10px;
 }
 
+.board__btn {
+    display: inline-block;
+    padding: 10px;
+    border: 1px solid #c2dffb;
+    border-radius: 5px;
+    width: 100px;
+    color: #000;
+    font-size: 16px;
+    background-color: #fff;
+    min-width: 20px;
+    text-decoration: none;
+    text-align: center;
+}
+
 .title {
     margin: 20px;
     margin-left: 10px;
