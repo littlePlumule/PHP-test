@@ -10,15 +10,8 @@
     
     }
 
-    function getUserFromToken($token){
-        global $conn;
-        $sql = sprintf(
-            "SELECT username FROM token WHERE token = '%s'",
-            $token
-        );
-        $result = $conn->query($sql);
-        $row = $result->fetch_assoc();
-        $username = $row['username'];        
+    function getUserFromUsername($username){
+        global $conn;      
 
         $sql = sprintf(
             "SELECT * FROM user WHERE username = '%s'",

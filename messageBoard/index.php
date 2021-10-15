@@ -1,12 +1,13 @@
 <?php
+session_start();
 require_once("./connect.php");
 require_once("./utils.php");
 
 $username = NULL;
-if(!empty($_COOKIE['token'])){
-    $user = getUserFromToken($_COOKIE['token']);
-    $username = $user['username'];
+if(!empty($_SESSION['username'])){
+    $username = $_SESSION['username'];
 }
+
 
 $sql = "SELECT * FROM messageBoard ORDER BY created_at DESC";
 $result = $conn->query($sql);

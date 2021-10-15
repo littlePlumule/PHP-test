@@ -1,4 +1,5 @@
 <?php
+session_start();
 require_once("./connect.php");
 require_once("./utils.php");
 
@@ -9,7 +10,7 @@ if(
     die('資料不齊全');
 }
 
-$user = getUserFromToken($_COOKIE['token']);
+$user = getUserFromUsername($_SESSION['username']);
 $nickname = $user['nickname'];
 
 $content = $_POST['content'];
