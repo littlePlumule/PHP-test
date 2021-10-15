@@ -1,15 +1,20 @@
 <?php
 require_once("./connect.php");
+require_once("./utils.php");
+
+$username = NULL;
+if(!empty($_COOKIE['token'])){
+    $user = getUserFromToken($_COOKIE['token']);
+    $username = $user['username'];
+}
+
 $sql = "SELECT * FROM messageBoard ORDER BY created_at DESC";
 $result = $conn->query($sql);
 if(!$result){
     die('Error:'.$conn->error);
+}
 
-}
-$username = NULL;
-if(!empty($_COOKIE['username'])){
-    $username = $_COOKIE['username'];
-}
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
