@@ -40,7 +40,7 @@ if(!$result){
         <a class="board__btn" href="login.php">登入</a>
             <?php } else{ ?>
                 <a class="board__btn" href="logout.php">登出</a>
-                <h3>Hello <?php echo $username; ?></h3>
+                <h3>Hello <?php echo escape($username); ?></h3>
             <?php } ?>    
         </div>
         
@@ -79,13 +79,13 @@ if(!$result){
                 <div class="card__body">
                     <div class="card__info">
                         <span class="card__author">
-                            <?php echo $row['nickname'];?>
+                            <?php echo escape($row['nickname']);?>
                         </span>
                         <span class="card__time">
-                            <?php echo $row['created_at'];?>
+                            <?php echo escape($row['created_at']);?>
                         </span>
                     </div>
-                    <div class="card__content"><?php echo $row['content'];?></div>
+                    <div class="card__content"><?php echo escape($row['content']);?></div>
                 </div>
             </div>
             <?php
