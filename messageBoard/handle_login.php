@@ -14,22 +14,25 @@ $username = $_POST['username'];
 $password = $_POST['password'];
 
 $sql = sprintf(
-    "SELECT * from user WHERE username = '%s' and password = '%s'", 
-    $username,
-    $password
+    "SELECT * from user WHERE username = '%s'", 
+    $username
 );
 $result = $conn->query($sql);
 if(!$result){
     die($conn->error);
 }
-
-if($result->num_rows){
-
-
+//查無使用者
+if($result->num_rows === 0){
+    header("Location: login.php?errCode=2");
+    exit();
+}
+//有查到使用者
+$row = $result->fetch_assoc();
+if(password_verify($password, $row['password'])){
+//登入成功
     $_SESSION['username'] = $username;
     header("Location: ./index.php");
 }else{
-
     header("Location: login.php?errCode=2");
 }
 
