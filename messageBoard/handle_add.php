@@ -14,12 +14,11 @@ $user = getUserFromUsername($_SESSION['username']);
 $nickname = $user['nickname'];
 
 $content = $_POST['content'];
-$sql = sprintf(
-    "INSERT INTO messageBoard(nickname,content)VALUE('%s','%s')",
-    $nickname, 
-    $content
-);
-$result = $conn->query($sql);
+$sql = "INSERT INTO messageBoard(nickname,content)VALUE(?,?)";
+$stmt = $conn->prepare($sql);
+$stmt->bind_param('ss',$nickname,$content);
+
+$result = $stmt->execute();
 if(!$result){
     die($conn->error);
 }

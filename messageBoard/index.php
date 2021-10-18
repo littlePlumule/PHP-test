@@ -10,12 +10,13 @@ if(!empty($_SESSION['username'])){
 
 
 $sql = "SELECT * FROM messageBoard ORDER BY created_at DESC";
-$result = $conn->query($sql);
+$stmt = $conn->prepare($sql);
+$result = $stmt->execute();
 if(!$result){
     die('Error:'.$conn->error);
 }
 
-
+$result = $stmt->get_result();
 ?>
 <!DOCTYPE html>
 <html lang="en">
