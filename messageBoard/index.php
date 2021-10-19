@@ -11,7 +11,7 @@ if(!empty($_SESSION['username'])){
 }
 
 
-$sql = "SELECT M.id as id, M.content as content, M.created_at as created_at, U.nickname as nickname, U.username as username FROM messageBoard AS M LEFT JOIN user AS U ON M.username = U.username ORDER BY M.id DESC";
+$sql = "SELECT M.id as id, M.content as content, M.created_at as created_at, U.nickname as nickname, U.username as username FROM messageBoard AS M LEFT JOIN user AS U ON M.username = U.username WHERE M.is_deleted IS NULL ORDER BY M.id DESC";
 $stmt = $conn->prepare($sql);
 $result = $stmt->execute();
 if(!$result){
@@ -98,6 +98,7 @@ $result = $stmt->get_result();
                             </span>
                             <?php if($row['username'] === $username){?>
                             <a href="update_content.php?id=<?php echo $row['id'];?>">編輯</a>
+                            <a href="delete_content.php?id=<?php echo $row['id'];?>">刪除</a>
                             <?php }?>
                         </div>
                         <div class="card__content"><?php echo escape($row['content']);?></div>
