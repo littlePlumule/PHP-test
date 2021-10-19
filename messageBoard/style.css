@@ -128,3 +128,20 @@ hr {
     word-break: break-word;
     white-space: pre-line;
 }
+
+.page_info {
+    text-align: center;
+}
+
+.paginator {
+    display: flex;
+    justify-content: center;
+    margin: 10px 0;
+}
+
+.paginator a {
+    text-decoration: none;
+    color: #5c9edc;
+    border: 1px solid #5c9edc;
+    padding: 10px;
+}

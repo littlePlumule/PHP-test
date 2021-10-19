@@ -10,9 +10,16 @@ if(!empty($_SESSION['username'])){
     $user = getUserFromUsername($username);
 }
 
+$page = 1;
+if(!empty($_GET['page'])){
+    $page = intval($_GET['page']);
+}
+$limit = 5;
+$offset = ($page-1) * $limit;
 
-$sql = "SELECT M.id as id, M.content as content, M.created_at as created_at, U.nickname as nickname, U.username as username FROM messageBoard AS M LEFT JOIN user AS U ON M.username = U.username WHERE M.is_deleted IS NULL ORDER BY M.id DESC";
+$sql = "SELECT M.id as id, M.content as content, M.created_at as created_at, U.nickname as nickname, U.username as username FROM messageBoard AS M LEFT JOIN user AS U ON M.username = U.username WHERE M.is_deleted IS NULL ORDER BY M.id DESC LIMIT ? OFFSET ?";
 $stmt = $conn->prepare($sql);
+$stmt->bind_param("ii", $limit, $offset);
 $result = $stmt->execute();
 if(!$result){
     die('Error:'.$conn->error);
@@ -108,6 +115,30 @@ $result = $stmt->get_result();
                 }
                 ?>
             </section>
+            <hr/>
+            <?php
+            $sql = "SELECT count(id) as count FROM messageboard WHERE is_deleted IS NULL";
+            $stmt = $conn->prepare($sql);
+            $result = $stmt->execute();
+            $result = $stmt->get_result();
+            $row = $result->fetch_assoc();
+            $count = $row['count'];
+            $total_page = intval(ceil($count / $limit));
+            ?>
+            <div class="page_info">
+                <span>總共有<?php echo $count ?>筆留言，分數：</span>
+                <span><?php echo $page ?> / <?php echo $total_page?></span>
+            </div>
+            <div class="paginator">
+                <?php if($page !== 1){?>
+                <a href="index.php?page=1">首頁</a>
+                <a href="index.php?page=<?php echo $page - 1;?>">上一頁</a>
+                <?php }?>
+                <?php if($page !== $total_page){?>
+                <a href="index.php?page=<?php echo $page + 1;?>">下一頁</a>
+                <a href="index.php?page=<?php echo $total_page?>">最後一頁</a>
+                <?php }?>
+            </div>
         </main>
         <script>
             var btn = document.querySelector('.update-nickname')
