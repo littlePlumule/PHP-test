@@ -4,8 +4,10 @@ require_once("./connect.php");
 require_once("./utils.php");
 
 $username = NULL;
+$user = NULL;
 if(!empty($_SESSION['username'])){
     $username = $_SESSION['username'];
+    $user = getUserFromUsername($username);
 }
 
 
@@ -41,7 +43,15 @@ $result = $stmt->get_result();
         <a class="board__btn" href="login.php">登入</a>
             <?php } else{ ?>
                 <a class="board__btn" href="logout.php">登出</a>
-                <h3>Hello <?php echo escape($username); ?></h3>
+                <span class = "board__btn update-nickname">編輯暱稱</span> 
+                <form class="hide update_nickname form" method=POST action="handle_update_user.php">
+                <div class="board__nickname">
+                    <span>新的暱稱：</span>
+                    <input type="text" name="nickname"/>
+                </div>
+                    <input class ="board__submit" type="submit"/>
+                </form>
+                <h3>Hello <?php echo escape($user['nickname']); ?></h3>
             <?php } ?>    
         </div>
         
@@ -94,6 +104,12 @@ $result = $stmt->get_result();
             ?>
         </section>
     </main>
-    
+    <script>
+        var btn = document.querySelector('.update-nickname')
+        btn.addEventListener('click', function(){
+            var form = document.querySelector('.update_nickname')
+            form.classList.toggle('hide')
+        })
+    </script>
 </body>
 </html>

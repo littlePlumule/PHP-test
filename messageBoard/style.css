@@ -44,6 +44,15 @@ body {
     text-align: center;
 }
 
+.hide {
+    display: none;
+}
+
+.update_nickname {
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
 .title {
     margin: 20px;
     margin-left: 0;
