@@ -11,7 +11,7 @@ if(!empty($_SESSION['username'])){
 }
 
 
-$sql = "SELECT * FROM messageBoard ORDER BY created_at DESC";
+$sql = "SELECT M.id as id, M.content as content, M.created_at as created_at, U.nickname as nickname, U.username as username FROM messageBoard AS M LEFT JOIN user AS U ON M.username = U.username ORDER BY M.id DESC";
 $stmt = $conn->prepare($sql);
 $result = $stmt->execute();
 if(!$result){
@@ -83,7 +83,6 @@ $result = $stmt->get_result();
         <section>
             <?php
             while($row=$result->fetch_assoc()){
-            
             ?>
             <div class="card">
                 <div class="card__avatar"></div>
@@ -91,6 +90,7 @@ $result = $stmt->get_result();
                     <div class="card__info">
                         <span class="card__author">
                             <?php echo escape($row['nickname']);?>
+                            (@<?php echo escape($row['username']);?>)
                         </span>
                         <span class="card__time">
                             <?php echo escape($row['created_at']);?>
