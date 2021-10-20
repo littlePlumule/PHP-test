@@ -13,9 +13,9 @@ if(
 $username = $_SESSION['username'];
 $id = $_POST['id'];
 $content = $_POST['content'];
-$sql = "UPDATE messageboard SET content=? WHERE id=?";
+$sql = "UPDATE messageboard SET content=? WHERE id=? and username=?";
 $stmt = $conn->prepare($sql);
-$stmt->bind_param('si',$content,$id);
+$stmt->bind_param('sis',$content,$id,$username);
 
 $result = $stmt->execute();
 if(!$result){

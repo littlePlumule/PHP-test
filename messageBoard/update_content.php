@@ -11,7 +11,7 @@ if(!empty($_SESSION['username'])){
     $user = getUserFromUsername($username);
 }
 
-$sql = "SELECT * FROM messageboard WHERE id = ?";
+$sql = "SELECT * FROM messageboard WHERE id=?";
 $stmt = $conn->prepare($sql);
 $stmt->bind_param("i", $id);
 $result = $stmt->execute();
