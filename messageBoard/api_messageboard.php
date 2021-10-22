@@ -38,5 +38,5 @@ $result = $stmt->get_result();
 
     $response = json_encode($json);
     header('Content-type:application/json;charset=utf-8');
-    print_r($response);
+    echo $response;
 ?>
