@@ -26,7 +26,7 @@ $stmt->bind_param('ss',$username,$content);
 $result = $stmt->execute();
 if(!$result){
     $json = array(
-        "OK" => false,
+        "ok" => false,
         "message" => $conn->error
     );
 
@@ -36,7 +36,7 @@ if(!$result){
 }
 
 $json = array(
-    "OK" => true,
+    "ok" => true,
     "message" => "Success"
 );
 

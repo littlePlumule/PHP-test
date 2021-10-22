@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>留言板</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <header class="warn">
+        <strong>
+                注意!本站為練習用網站，因教學用途刻意忽略資安實作，註冊時請勿使用任何真實的帳號密碼。
+            </strong>
+    </header>
+
+    <main class="board">
+
+        <h1 class="title">
+            Comments
+        </h1>
+
+        <form class="form">
+            <textarea class="form__textarea" name="content" rows="3" placeholder="請輸入你的留言..."></textarea>
+
+            <input class="board__submit" type="submit" />
+
+        </form>
+
+        <hr/>
+
+        <section>
+
+        </section>
+
+        <hr/>
+
+    </main>
+    <script>
+        var request = new XMLHttpRequest();
+        request.open('GET', 'api_messageboard.php', true);
+
+        request.onload = function() {
+            if (this.status >= 200 && this.status < 400) {
+                // Success!
+                var resp = this.response;
+                var json = JSON.parse(resp)
+                var comments = json.comments;
+                for (var i = 0; i < comments.length; i++) {
+                    var comment = comments[i]
+                    var div = document.createElement('div')
+                    div.classList.add('card')
+                    div.innerHTML = `
+                            <div class="card__avatar"></div>
+                            <div class="card__body">
+                                <div class="card__info">
+                                    <span class="card__author">
+                                        ${encodeHTML(comment.nickname)}(@${encodeHTML(comment.username)})
+                                    </span>
+                                    <span class="card__time">
+                                        ${encodeHTML(comment.created_at)}
+                                    </span>
+                                    
+                                </div>
+                                <div class="card__content">${encodeHTML(comment.content)}</div>
+                            </div>
+                        `
+                    document.querySelector('section').appendChild(div)
+                }
+            }
+        };
+
+        request.send();
+        var form = document.querySelector('.form')
+        form.addEventListener('submit', function(e) {
+            e.preventDefault();
+            var content = document.querySelector('textarea[name=content]').value
+            var request = new XMLHttpRequest();
+            request.open('POST', 'api_add.php', true);
+            request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded; charset=UTF-8');
+            request.send("username=aa&content=" + encodeURIComponent(content));
+            request.onload = function() {
+                if (this.status >= 200 && this.status < 400) {
+                    var resp = this.response;
+                    var json = JSON.parse(resp)
+                    if (json.ok) {
+
+                        location.reload()
+                    } else {
+                        alert(json.message)
+                    }
+
+                }
+            }
+        })
+
+        function encodeHTML(s) {
+            return s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/"/g, '&quot;');
+        }
+    </script>
+</body>
+
+</html>
