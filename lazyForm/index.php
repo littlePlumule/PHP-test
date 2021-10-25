@@ -126,7 +126,7 @@
             </p>
 
 
-            <button onclick="window.location.href='./lazyform.html'" class="cta__btn">線上報名</button>
+            <button onclick="window.location.href='./lazyform.php'" class="cta__btn">線上報名</button>
         </div>
     </section>
     <footer>&copy; 2020 &copy; Copyright. All rights Reserved.</footer>
