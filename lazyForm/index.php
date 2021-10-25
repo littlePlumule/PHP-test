@@ -132,7 +132,7 @@
     <footer>&copy; 2020 &copy; Copyright. All rights Reserved.</footer>
 </body>
 <?php
-if($_GET['code'] == 1){
+if(isset($_GET['code'])&& $_GET['code'] == 1){
     echo '<script>alert("報名成功")</script>';
 }
 
