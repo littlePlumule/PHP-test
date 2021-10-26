@@ -14,7 +14,7 @@ $page = 1;
 if(!empty($_GET['page'])){
     $page = intval($_GET['page']);
 }
-$limit = 5;
+$limit = 10;
 $offset = ($page-1) * $limit;
 
 $sql = "SELECT M.id as id, M.content as content, M.created_at as created_at, U.nickname as nickname, U.username as username FROM messageBoard AS M LEFT JOIN user AS U ON M.username = U.username WHERE M.is_deleted IS NULL ORDER BY M.id DESC LIMIT ? OFFSET ?";
@@ -79,7 +79,9 @@ $result = $stmt->get_result();
                 
             <form class="form" method="POST" action="handle_add.php">
                 <textarea class="form__textarea" name="content" rows="3" placeholder="請輸入你的留言..."></textarea>
-                <?php if($username){ ?>
+                <?php if($username && !hasPermission($user, "create", NULL)) {?>
+                    <h3>你已被停權</h3>
+                <?php }else if($username){ ?>
                 <input class="board__submit" type="submit"/>
                 <?php } else{ ?>
                 <h3>請登入發布留言</h3>
@@ -103,10 +105,11 @@ $result = $stmt->get_result();
                             <span class="card__time">
                                 <?php echo escape($row['created_at']);?>
                             </span>
-                            <?php if($row['username'] === $username){?>
-                            <a href="update_content.php?id=<?php echo $row['id'];?>">編輯</a>
-                            <a href="delete_content.php?id=<?php echo $row['id'];?>">刪除</a>
-                            <?php }?>
+                            <?php if(hasPermission($user, "modify", $row)){?>
+                                
+                            <a href="update_content.php?id=<?php echo $row['id']; ?>">編輯</a>
+                            <a href="delete_content.php?id=<?php echo $row['id']; ?>">刪除</a>
+                            <?php } ?>
                         </div>
                         <div class="card__content"><?php echo escape($row['content']);?></div>
                     </div>

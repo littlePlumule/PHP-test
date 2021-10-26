@@ -11,6 +11,12 @@ if(
 }
 
 $username = $_SESSION['username'];
+$user = getUserFromUsername($username);
+
+if(!hasPermission($user, "create", NULL)){
+    header("Location: ./index.php");
+    exit;
+}
 
 $content = $_POST['content'];
 $sql = "INSERT INTO messageBoard(username,content)VALUE(?,?)";

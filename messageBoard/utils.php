@@ -20,10 +20,31 @@
         $result = $conn->query($sql);
         $row = $result->fetch_assoc();
 
-        return $row; 
+        return $row; //username, id, nickname, role;
     }
     
     function escape($str){
         return htmlspecialchars($str, ENT_QUOTES);
+    }
+
+    // $action： update, delete, create
+    function hasPermission($user, $action, $comment){
+        if(!empty($user["role"])){
+            if($user["role"]==="ADMIN"){
+                return true;
+            }
+            if($user["role"]==="NORMAL"){
+                if($action === "create") return true;
+                return $comment["username"]===$user["username"];
+            }
+            if($user["role"]==="BAN"){
+                return $action !=="create";
+            }
+        }
+        
+    }
+
+    function isAdmin($user){
+        return $user["role"]==="ADMIN";
     }
 ?>

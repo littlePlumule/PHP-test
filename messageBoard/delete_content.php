@@ -13,9 +13,18 @@ if(
 
 $id = $_GET['id'];
 $username = $_SESSION['username'];
+$user = getUserFromUsername($username);
 $sql = "UPDATE messageboard SET is_deleted=1 WHERE id=? and username=?";
+if(isAdmin($user)){
+    $sql = "UPDATE messageboard SET is_deleted=1 WHERE id=? ";
+}
 $stmt = $conn->prepare($sql);
-$stmt->bind_param('is',$id,$username);
+if(isAdmin($user)){
+    $stmt->bind_param('i',$id);
+}else{
+    $stmt->bind_param('is',$id,$username);
+}
+
 
 $result = $stmt->execute();
 if(!$result){
