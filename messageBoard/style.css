@@ -145,3 +145,20 @@ hr {
     border: 1px solid #5c9edc;
     padding: 10px;
 }
+
+td a {
+    text-decoration: none;
+    color: #000;
+}
+
+td a:hover {
+    color: #f00;
+}
+
+.back {
+    margin-top: 20px;
+}
+
+.ban {
+    color: #c00;
+}

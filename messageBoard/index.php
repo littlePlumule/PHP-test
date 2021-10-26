@@ -51,6 +51,9 @@ $result = $stmt->get_result();
                 <?php } else{ ?>
                     <a class="board__btn" href="logout.php">登出</a>
                     <span class = "board__btn update-nickname">編輯暱稱</span> 
+                    <?php if($user && $user["role"]==="ADMIN"){ ?>
+                    <a class="board__btn" href="admin.php">管理後台</a>
+                    <?php } ?>
                     <form class="hide update_nickname form" method=POST action="handle_update_user.php">
                     <div class="board__nickname">
                         <span>新的暱稱：</span>
@@ -80,7 +83,7 @@ $result = $stmt->get_result();
             <form class="form" method="POST" action="handle_add.php">
                 <textarea class="form__textarea" name="content" rows="3" placeholder="請輸入你的留言..."></textarea>
                 <?php if($username && !hasPermission($user, "create", NULL)) {?>
-                    <h3>你已被停權</h3>
+                    <h3 class="ban">你已被停權</h3>
                 <?php }else if($username){ ?>
                 <input class="board__submit" type="submit"/>
                 <?php } else{ ?>
