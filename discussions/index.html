@@ -39,26 +39,37 @@
             } else {
                 container.append(html)
             }
-
-
         }
-        $(document).ready(() => {
-            const commentsDOM = $(".comments")
+
+        function getCommentsAPI(siteKey, before, cb) {
+
+            let url = `http://localhost/yuhung/discussions/api_comments.php?site_key=${siteKey}`
+            if (before) {
+                url += '&before=' + before
+            }
+
             $.ajax({
-                url: 'http://localhost/yuhung/discussions/api_comments.php?site_key=yuhung',
+                url: url,
 
             }).done((data) => {
-                if (!data.ok) {
-                    alert(data.message)
-                    return
-                }
+                cb(data)
 
-                const comments = data.discussions;
-                for (let comment of comments) {
-                    appendcomment(commentsDOM, comment)
-                }
 
             });
+        }
+
+
+        const siteKey = 'yuhung'
+        const loadMoreButtonHTML = '<button class="load-more btn btn-primary">載入更多</button>'
+        let lastId = null
+        let isEnd = false
+        $(document).ready(() => {
+            const commentsDOM = $(".comments")
+            getComments()
+
+            $('.comments').on('click', '.load-more', () => {
+                getComments()
+            })
 
             $(".add-comment-form").submit(e => {
                 e.preventDefault();
@@ -83,6 +94,34 @@
 
             })
         })
+
+        function getComments() {
+            const commentsDOM = $(".comments")
+            $('.load-more').hide()
+            if (isEnd) {
+                return
+            }
+            getCommentsAPI(siteKey, lastId, data => {
+                if (!data.ok) {
+                    alert(data.message)
+                    return
+                }
+
+                const comments = data.discussions;
+                for (let comment of comments) {
+                    appendcomment(commentsDOM, comment)
+                }
+                let length = comments.length
+                if (length === 0) {
+                    isEnd = true
+                    $('.load-more').hide()
+                } else {
+                    lastId = comments[length - 1].id
+                    $('.comments').append(loadMoreButtonHTML)
+                }
+
+            })
+        }
     </script>
 </head>
 

@@ -18,9 +18,17 @@ if(
 
 $site_key = $_GET["site_key"];
 
-$sql = "SELECT nickname, content, created_at FROM discussions WHERE site_key = ? ORDER BY id DESC";
+$sql = "SELECT id, nickname, content, created_at FROM discussions WHERE site_key = ? " .
+ (empty($_GET["before"]) ? "" : "and id < ? ") . 
+ "ORDER BY id DESC limit 5";
 $stmt = $conn->prepare($sql);
-$stmt->bind_param("s", $site_key);
+
+if(empty($_GET["before"])){
+    $stmt->bind_param("s", $site_key);
+} else {
+    $stmt->bind_param("si", $site_key, $_GET["before"]);
+}
+
 $result = $stmt->execute();
 
 if(!$result){
@@ -37,6 +45,7 @@ $result = $stmt->get_result();
 $discussions = array();
 while($row = $result->fetch_assoc()){
     array_push($discussions, array(
+        "id" => $row["id"],
         "nickname" => $row["nickname"],
         "content" => $row["content"],
         "created_at" => $row["created_at"]
