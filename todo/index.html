@@ -47,8 +47,8 @@
             border-color: rgba(255, 0, 0, 0.5);
         }
         
-        .hide {
-            display: none !important;
+        .todo {
+            display: flex;
         }
     </style>
 </head>
@@ -88,7 +88,7 @@
         let id = 1;
         let todoCount = 0;
         let uncompleteTodoCount = 0;
-        const template = `<div class="todo list-group-item list-group-item-action d-flex justify-content-between align-items-center">
+        const template = `<div class="todo list-group-item list-group-item-action justify-content-between align-items-center">
                         <div class="todo__content-wrapper custom-control custom-checkbox">
                             <input type="checkbox" class="check-todo custom-control-input" id="todo-{id}">
                             <label class="todo__content custom-control-label" for="todo-{id}">{content}</label>
@@ -116,13 +116,13 @@
             updateCounter()
         })
 
+        //刪除已完成所有
         $('.clear-all').click(() => {
-            $('.todo.checked').each(function(i, el) {
-                todoCount--
-                el.remove()
-            });
+            todoCount -= $('.todo.checked').length
+            $('.todo.checked').remove()
         })
 
+        //當check被勾選後
         $('.todos').on('change', '.check-todo', (e) => {
             const target = $(e.target)
             const isChecked = target.is(':checked')
@@ -136,33 +136,22 @@
             updateCounter()
         })
 
+        //顯示全部、已完成、未完成
         $('.options').on('click', 'div', e => {
             const target = $(e.target)
             const filter = target.attr('data-filter')
+
             $('.options div.active').removeClass('active')
             target.addClass('active')
             if (filter === 'all') {
-                $('.todo').each((i, el) => {
-                    $(el).removeClass('hide')
-                })
+                $('.todo').show()
 
             } else if (filter === 'uncomplete') {
-                $('.todo').each((i, el) => {
-                    if ($(el).hasClass('checked')) {
-                        $(el).addClass('hide')
-                    } else {
-                        $(el).removeClass('hide')
-                    }
-                })
+                $('.todo').show()
+                $('.todo.checked').hide()
             } else {
-                $('.todo').each((i, el) => {
-                    if (!$(el).hasClass('checked')) {
-                        $(el).addClass('hide')
-                    } else {
-                        $(el).removeClass('hide')
-                    }
-                })
-                el.removeClass('hide')
+                $('.todo').hide()
+                $('.todo.checked').show()
             }
         })
 
