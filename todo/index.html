@@ -88,17 +88,55 @@
         let id = 1;
         let todoCount = 0;
         let uncompleteTodoCount = 0;
-        const template = `<div class="todo list-group-item list-group-item-action justify-content-between align-items-center">
+        const template = `<div class="todo list-group-item list-group-item-action justify-content-between align-items-center {todoClass}">
                         <div class="todo__content-wrapper custom-control custom-checkbox">
                             <input type="checkbox" class="check-todo custom-control-input" id="todo-{id}">
                             <label class="todo__content custom-control-label" for="todo-{id}">{content}</label>
                         </div>
                         <button type="button" class="btn-delete btn btn-danger">刪除</button>
                     </div>`
+
+        const searchParams = new URLSearchParams(window.location.search);
+        const todoId = searchParams.get('id')
+
+        if (todoId) {
+            $.getJSON("http://localhost/yuhung/todo/get_todo.php?id=" + todoId, (data) => {
+                const todos = JSON.parse(data.data.todo)
+                restoreTodos(todos)
+            })
+        }
+
+        function restoreTodos(todos) {
+            if (todos.length === 0) return
+            id = parseInt(todos[todos.length - 1].id) + 1
+            console.log(id)
+            for (let i = 0; i < todos.length; i++) {
+                const todo = todos[i]
+                $('.todos').append(
+                    template
+                    .replace('{content}', escape(todo.content))
+                    .replace(/{id}/g, todo.id)
+                    .replace('{todoClass}', todo.isDone ? 'checked' : '')
+                )
+
+                todoCount++
+                if (todo.isDone) {
+                    $('#todo-' + todo.id).prop("checked", true)
+                }
+                if (!todo.isDone) {
+                    uncompleteTodoCount++
+                }
+            }
+
+            updateCounter()
+        }
+
+        //當新增被按下
         $('.btn-add').click(() => {
             addTodo()
         })
 
+        //用enter也能新增todo
         $('.input-todo').keydown(e => {
             if (e.key === 'Enter') {
                 addTodo()
@@ -106,6 +144,7 @@
 
         })
 
+        //刪除單一todo
         $('.todos').on('click', '.btn-delete', (e) => {
             $(e.target).parent().remove();
             todoCount--
@@ -136,7 +175,7 @@
             updateCounter()
         })
 
-        //顯示全部、已完成、未完成
+        //按下全部、已完成、未完成
         $('.options').on('click', 'div', e => {
             const target = $(e.target)
             const filter = target.attr('data-filter')
@@ -154,6 +193,36 @@
                 $('.todo.checked').show()
             }
         })
+
+        //按下儲存  把ui便資料
+        $('.btn-save').click(() => {
+            let todos = []
+            $('.todo').each((i, el) => {
+                const input = $(el).find('.check-todo')
+                const label = $(el).find('.todo__content')
+                todos.push({
+                    id: input.attr('id').replace('todo-', ''),
+                    content: label.text(),
+                    isDone: $(el).hasClass('checked')
+                })
+            })
+            const data = JSON.stringify(todos)
+            $.ajax({
+                type: "POST",
+                url: "http://localhost/yuhung/todo/add_todo.php",
+                data: {
+                    todo: data
+                },
+                success: function(res) {
+                    const resId = res.id
+                    window.location = 'index.html?id=' + resId
+                },
+                error: function() {
+                    alert("Error QQ")
+                }
+            })
+        })
+
 
         function updateCounter() {
             $('.uncomplete-count').text(uncompleteTodoCount)
