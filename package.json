@@ -1,19 +1,31 @@
 {
-  "name": "yuhung",
-  "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://littlePlumule@github.com/littlePlumule/PHP-test.git"
-  },
-  "author": "",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/littlePlumule/PHP-test/issues"
-  },
-  "homepage": "https://github.com/littlePlumule/PHP-test#readme"
+    "name": "yuhung",
+    "version": "1.0.0",
+    "description": "",
+    "main": "index.js",
+    "scripts": {
+        "bulid": "webpack",
+        "start": "webpack serve --open",
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://littlePlumule@github.com/littlePlumule/PHP-test.git"
+    },
+    "author": "",
+    "license": "ISC",
+    "bugs": {
+        "url": "https://github.com/littlePlumule/PHP-test/issues"
+    },
+    "homepage": "https://github.com/littlePlumule/PHP-test#readme",
+    "devDependencies": {
+        "css-loader": "^6.5.1",
+        "jquery": "^3.6.0",
+        "sass": "^1.43.4",
+        "sass-loader": "^12.3.0",
+        "style-loader": "^3.3.1",
+        "webpack": "^5.64.0",
+        "webpack-cli": "^4.9.1",
+        "webpack-dev-server": "^4.4.0"
+    }
 }
