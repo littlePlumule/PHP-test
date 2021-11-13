@@ -1,75 +1,89 @@
 import { getComments, addComments } from "./api"
-import { appendcomment } from "./utils"
-import { cssTemplate, loadMoreButtonHTML, formTemplate } from "./template"
+import { appendcomment, appendStyle } from "./utils"
+import { cssTemplate, getLoadMoreButton, getForm } from "./template"
 import $ from "jquery"
 
-let siteKey = '';
-let apiUrl = '';
-let containerElement = null;
-let lastId = null
-let isEnd = false
-let commentsDOM = null;
+
 
 export function init(options) {
+    let siteKey = '';
+    let apiUrl = '';
+    let containerElement = null;
+    let lastId = null
+    let isEnd = false
+    let commentsDOM = null;
+    let loadMoreClassName
+    let commentsClassName
+    let commentsSelector
+    let formClassName
+    let formSelector
+
     siteKey = options.siteKey;
     apiUrl = options.apiUrl;
-    containerElement = $(options.containerSelector);
-    containerElement.append(formTemplate)
-    const styleElement = document.createElement('style')
-    styleElement.type = 'text/css'
-    styleElement.appendChild(document.createTextNode(cssTemplate))
-    document.head.appendChild(styleElement)
+    loadMoreClassName = `${siteKey}-load-more`
+    commentsClassName = `${siteKey}-comments`
+    commentsSelector = '.' + commentsClassName
+    formClassName = `${siteKey}-add-comment-form`
+    formSelector = '.' + formClassName
 
-    const commentsDOM = $(".comments")
+    containerElement = $(options.containerSelector);
+    containerElement.append(getForm(formClassName, commentsClassName))
+    appendStyle(cssTemplate)
+
+
+    commentsDOM = $(commentsSelector)
     getNewComments()
 
-    $('.comments').on('click', '.load-more', () => {
+    $(commentsSelector).on('click', '.' + loadMoreClassName, () => {
         getNewComments()
     })
 
-    $(".add-comment-form").submit(e => {
+    $(formSelector).submit(e => {
         e.preventDefault();
+        const nicknameDOM = $(`${formSelector} input[name=nickname]`)
+        const contentDOM = $(`${formSelector} textarea[name=content]`)
         const newComment = {
             'site_key': siteKey,
-            'nickname': $('input[name=nickname]').val(),
-            'content': $('textarea[name=content]').val()
+            'nickname': nicknameDOM.val(),
+            'content': contentDOM.val()
         }
         addComments(apiUrl, siteKey, newComment, data => {
             if (!data.ok) {
                 alert(data.message)
                 return
             }
-            $('input[name=nickname]').val('')
-            $('textarea[name=content]').val('')
+            nicknameDOM.val('')
+            contentDOM.val('')
             appendcomment(commentsDOM, newComment, true)
         })
     })
-}
 
-function getNewComments() {
-    const commentsDOM = $(".comments")
-    $('.load-more').hide()
-    if (isEnd) {
-        return
-    }
-    getComments(apiUrl, siteKey, lastId, data => {
-        if (!data.ok) {
-            alert(data.message)
+    function getNewComments() {
+        const commentsDOM = $(commentsSelector)
+        $('.' + loadMoreClassName).hide()
+        if (isEnd) {
             return
         }
+        getComments(apiUrl, siteKey, lastId, data => {
+            if (!data.ok) {
+                alert(data.message)
+                return
+            }
 
-        const comments = data.discussions;
-        for (let comment of comments) {
-            appendcomment(commentsDOM, comment)
-        }
-        let length = comments.length
-        if (length === 0) {
-            isEnd = true
-            $('.load-more').hide()
-        } else {
-            lastId = comments[length - 1].id
-            $('.comments').append(loadMoreButtonHTML)
-        }
+            const comments = data.discussions;
+            for (let comment of comments) {
+                appendcomment(commentsDOM, comment)
+            }
+            let length = comments.length
+            if (length === 0) {
+                isEnd = true
+                $('.' + loadMoreClassName).hide()
+            } else {
+                lastId = comments[length - 1].id
+                const loadMoreButtonHTML = getLoadMoreButton(loadMoreClassName)
+                $(commentsSelector).append(loadMoreButtonHTML)
+            }
 
-    })
+        })
+    }
 }

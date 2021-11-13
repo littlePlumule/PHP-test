@@ -1,3 +1,10 @@
+export function appendStyle(cssTemplate) {
+    const styleElement = document.createElement('style')
+    styleElement.type = 'text/css'
+    styleElement.appendChild(document.createTextNode(cssTemplate))
+    document.head.appendChild(styleElement)
+
+}
 export function escape(toOutput) {
     return toOutput.replace(/\&/g, '&amp;')
         .replace(/\</g, '&lt;')

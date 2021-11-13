@@ -18,12 +18,20 @@
                 containerSelector: ".comment-area"
             })
         })
+        $(document).ready(() => {
+            commentPlugin.init({
+                siteKey: "yuhung123",
+                apiUrl: "http://localhost/yuhung/discussions/",
+                containerSelector: ".comment-area2"
+            })
+        })
     </script>
 </head>
 
 <body>
     <div class="container">
         <div class="comment-area"></div>
+        <div class="comment-area2"></div>
     </div>
 
 </body>
